@@ -59,30 +59,35 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 }
 
 async fn fetch_website() -> String {
-    let website = reqwest::get("https://dolarrekorkirdimi.com/")
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
+    let website = reqwest::get(
+        "https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/37/x86_64/testing/",
+    )
+    .await
+    .unwrap()
+    .text()
+    .await
+    .unwrap();
     website
 }
 
 async fn parse_data() -> String {
     let html = fetch_website().await;
+    //console_log!("{}", html);
 
-    let fragment = scraper::Html::parse_fragment(&html);
+    let re = regex::Regex::new(
+        r"ue</a>                                [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
+    )
+    .unwrap();
 
-    let css_selector = ".container > center:nth-child(1) > h4:nth-child(17)";
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
 
-    let selector = scraper::Selector::parse(css_selector).unwrap();
+    let mut counter = 0;
 
-    let mut output = "".to_owned();
-
-    for element in fragment.select(&selector) {
-        output = element.inner_html().trim_end().to_owned();
+    while counter < 38 {
+        output.remove(0);
+        counter += 1;
     }
 
     console_log!("{}", output);
-    output
+    output.to_owned()
 }
