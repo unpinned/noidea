@@ -27,7 +27,7 @@ static PART1: &str = r#"<!DOCTYPE html>
   <body>
     <main class="container">
       <img
-        src="https://files.catbox.moe/287rgs.png"
+        src="https://raw.githubusercontent.com/unpinned/noidea/main/static/sbkn.png"
         style="
           display: block;
           margin-left: auto;
