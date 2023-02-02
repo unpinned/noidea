@@ -29,7 +29,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // functionality and a `RouteContext` which you can use to  and get route parameters and
     // Environment bindings like KV Stores, Durable Objects, Secrets, and Variables.
     router
-        .get("/", |_, _| Response::ok("Hello from Workers!"))
+        //.get("/", |_, _| Response::ok("Hello from Workers!"))
         .post_async("/form/:field", |mut req, ctx| async move {
             if let Some(name) = ctx.param("field") {
                 let form = req.form_data().await?;
@@ -50,15 +50,31 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
             let version = ctx.var("WORKERS_RS_VERSION")?.to_string();
             Response::ok(version)
         })
-        .get_async("/fetchwebsite", |_, _| async {
-            let deneme = parse_data().await;
+        .get_async("/", |_, _| async {
+            let tsb = tsb_parse_data().await;
+            let tkn = tkn_parse_data().await;
+            let sb = sb_parse_data().await;
+            let kn = kn_parse_data().await;
+
+            let deneme = "Silverblue 37: ".to_owned()
+                + &sb
+                + "\n"
+                + "Kinoite 37: "
+                + &kn
+                + "\n"
+                + "Testing Silverblue 37: "
+                + &tsb
+                + "\n"
+                + "Testing Kinoite 37: "
+                + &tkn;
+
             Response::ok(deneme)
         })
         .run(req, env)
         .await
 }
 
-async fn fetch_website() -> String {
+async fn testing_fetch_website() -> String {
     let website = reqwest::get(
         "https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/37/x86_64/testing/",
     )
@@ -70,8 +86,8 @@ async fn fetch_website() -> String {
     website
 }
 
-async fn parse_data() -> String {
-    let html = fetch_website().await;
+async fn tsb_parse_data() -> String {
+    let html = testing_fetch_website().await;
     //console_log!("{}", html);
 
     let re = regex::Regex::new(
@@ -84,6 +100,84 @@ async fn parse_data() -> String {
     let mut counter = 0;
 
     while counter < 38 {
+        output.remove(0);
+        counter += 1;
+    }
+
+    console_log!("{}", output);
+    output.to_owned()
+}
+
+async fn tkn_parse_data() -> String {
+    let html = testing_fetch_website().await;
+    //console_log!("{}", html);
+
+    let re = regex::Regex::new(
+        r"te</a>                                   [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
+    )
+    .unwrap();
+
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
+
+    let mut counter = 0;
+
+    while counter < 41 {
+        output.remove(0);
+        counter += 1;
+    }
+
+    console_log!("{}", output);
+    output.to_owned()
+}
+
+async fn fetch_website() -> String {
+    let website =
+        reqwest::get("https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/37/x86_64/")
+            .await
+            .unwrap()
+            .text()
+            .await
+            .unwrap();
+    website
+}
+
+async fn sb_parse_data() -> String {
+    let html = fetch_website().await;
+    //console_log!("{}", html);
+
+    let re =
+        regex::Regex::new(r"ue</a>                         [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d")
+            .unwrap();
+
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
+
+    let mut counter = 0;
+
+    console_log!("{}", output.len());
+
+    while counter < 31 {
+        output.remove(0);
+        counter += 1;
+    }
+
+    console_log!("{}", output);
+    output.to_owned()
+}
+
+async fn kn_parse_data() -> String {
+    let html = fetch_website().await;
+    //console_log!("{}", html);
+
+    let re = regex::Regex::new(
+        r"te</a>                            [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
+    )
+    .unwrap();
+
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
+
+    let mut counter = 0;
+
+    while counter < 34 {
         output.remove(0);
         counter += 1;
     }
