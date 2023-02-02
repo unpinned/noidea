@@ -13,6 +13,75 @@ fn log_request(req: &Request) {
     );
 }
 
+static PART1: &str = r#"<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
+    />
+    <title>Fedora Silverblue Tracking</title>
+  </head>
+  <body>
+    <main class="container">
+      <img
+        src="https://files.catbox.moe/287rgs.png"
+        style="
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 20%;
+        "
+      />
+      <table>
+        <h1 style="text-align: center">
+          Track last update status of Silverblue and Kinoite
+        </h1>
+        <thead>
+          <tr>
+            <th scope="col">Edition</th>
+            <th scope="col">Current Version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Silverblue</th>
+            <td><mark>"#;
+
+static PART2: &str = r#" UTC</mark></td>
+</tr>
+<tr>
+  <th scope="row">Kinoite</th>
+  <td><mark>"#;
+
+static PART3: &str = r#" UTC</mark></td>
+  </tr>
+  <tr>
+    <th scope="row">Testing Silverblue</th>
+    <td><mark>"#;
+static PART4: &str = r#" UTC</mark></td>
+</tr>
+<tr>
+  <th scope="row">Testing Kinoite</th>
+  <td><mark>"#;
+static PART5: &str = r#" UTC</mark></td>
+</tr>
+</tbody>
+</table>
+</main>
+</body>
+<footer>
+<main class="container">
+<p style="text-align: center">Powered by Cloudflare Workers</p>
+<div style="text-align:center">
+<a href="https://github.com/unpinned/noidea">Source Code</a>
+</div>
+</main>
+</footer> 
+</html>"#;
+
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
     log_request(&req);
@@ -56,19 +125,8 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
             let sb = sb_parse_data().await;
             let kn = kn_parse_data().await;
 
-            let deneme = "Silverblue 37: ".to_owned()
-                + &sb
-                + "\n"
-                + "Kinoite 37: "
-                + &kn
-                + "\n"
-                + "Testing Silverblue 37: "
-                + &tsb
-                + "\n"
-                + "Testing Kinoite 37: "
-                + &tkn;
-
-            Response::ok(deneme)
+            let deneme = PART1.to_owned() + &sb + PART2 + &kn + PART3 + &tsb + PART4 + &tkn + PART5;
+            Response::from_html(deneme)
         })
         .run(req, env)
         .await
