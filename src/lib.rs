@@ -19,6 +19,11 @@ static PART1: &str = r#"<!DOCTYPE html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
+      rel="icon"
+      type="image/png"
+      href="https://em-content.zobj.net/thumbs/120/google/350/stopwatch_23f1-fe0f.png"
+    />
+    <link
       rel="stylesheet"
       href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
     />
