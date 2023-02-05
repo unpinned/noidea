@@ -52,24 +52,24 @@ static PART1: &str = r#"<!DOCTYPE html>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Silverblue</th>
+            <th scope="row">Silverblue 37</th>
             <td><mark>"#;
 
 static PART2: &str = r#" UTC</mark></td>
 </tr>
 <tr>
-  <th scope="row">Kinoite</th>
+  <th scope="row">Kinoite 37</th>
   <td><mark>"#;
 
 static PART3: &str = r#" UTC</mark></td>
   </tr>
   <tr>
-    <th scope="row">Testing Silverblue</th>
+    <th scope="row">Testing Silverblue 37</th>
     <td><mark>"#;
 static PART4: &str = r#" UTC</mark></td>
 </tr>
 <tr>
-  <th scope="row">Testing Kinoite</th>
+  <th scope="row">Testing Kinoite 37</th>
   <td><mark>"#;
 static PART5: &str = r#" UTC</mark></td>
 </tr>
