@@ -73,6 +73,18 @@ static PART4: &str = r#" UTC</mark></td>
   <td><mark>"#;
 static PART5: &str = r#" UTC</mark></td>
 </tr>
+<tr>
+  <th scope="row">Rawhide Silverblue</th>
+  <td><mark>"#;
+
+static PART6: &str = r#" UTC</mark></td>
+</tr>
+<tr>
+  <th scope="row">Rawhide Kinoite</th>
+  <td><mark>"#;
+
+static PART7: &str = r#" UTC</mark></td>
+</tr>
 </tbody>
 </table>
 </main>
@@ -80,11 +92,11 @@ static PART5: &str = r#" UTC</mark></td>
 <footer>
 <main class="container">
 <p style="text-align: center">Powered by Cloudflare Workers</p>
-<div style="text-align:center">
+<div style="text-align: center">
 <a href="https://github.com/unpinned/noidea">Source Code</a>
 </div>
 </main>
-</footer> 
+</footer>
 </html>"#;
 
 #[event(fetch)]
@@ -129,8 +141,22 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
             let tkn = tkn_parse_data().await;
             let sb = sb_parse_data().await;
             let kn = kn_parse_data().await;
+            let rsb = rsb_parse_data().await;
+            let rkn = rkn_parse_data().await;
 
-            let deneme = PART1.to_owned() + &sb + PART2 + &kn + PART3 + &tsb + PART4 + &tkn + PART5;
+            let deneme = PART1.to_owned()
+                + &sb
+                + PART2
+                + &kn
+                + PART3
+                + &tsb
+                + PART4
+                + &tkn
+                + PART5
+                + &rsb
+                + PART6
+                + &rkn
+                + PART7;
             Response::from_html(deneme)
         })
         .run(req, env)
@@ -233,6 +259,64 @@ async fn kn_parse_data() -> String {
 
     let re = regex::Regex::new(
         r"te</a>                            [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
+    )
+    .unwrap();
+
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
+
+    let mut counter = 0;
+
+    while counter < 34 {
+        output.remove(0);
+        counter += 1;
+    }
+
+    console_log!("{}", output);
+    output.to_owned()
+}
+
+async fn rawhidefetch_website() -> String {
+    let website = reqwest::get(
+        "https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/rawhide/x86_64/",
+    )
+    .await
+    .unwrap()
+    .text()
+    .await
+    .unwrap();
+    website
+}
+
+async fn rsb_parse_data() -> String {
+    let html = rawhidefetch_website().await;
+    //console_log!("{}", html);
+
+    let re = regex::Regex::new(
+        r"ue</a>                              [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
+    )
+    .unwrap();
+
+    let mut output = re.find(&html).unwrap().as_str().to_owned();
+
+    let mut counter = 0;
+
+    console_log!("{}", output.len());
+
+    while counter < 31 {
+        output.remove(0);
+        counter += 1;
+    }
+
+    console_log!("{}", output);
+    output.to_owned()
+}
+
+async fn rkn_parse_data() -> String {
+    let html = rawhidefetch_website().await;
+    //console_log!("{}", html);
+
+    let re = regex::Regex::new(
+        r"te</a>                                 [0-9]{4}-[0-9]{2}-[0-9]{2} \d\d:\d\d",
     )
     .unwrap();
 
