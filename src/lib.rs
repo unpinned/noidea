@@ -25,7 +25,7 @@ static PART1: &str = r#"<!DOCTYPE html>
     />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
+      href="https://unpkg.com/@picocss/pico@1.5.7/css/pico.min.css"
     />
     <title>Fedora Silverblue Tracking</title>
   </head>
