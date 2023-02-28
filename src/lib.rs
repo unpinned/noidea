@@ -64,12 +64,12 @@ static PART2: &str = r#" UTC</mark></td>
 static PART3: &str = r#" UTC</mark></td>
   </tr>
   <tr>
-    <th scope="row">Testing Silverblue 37</th>
+    <th scope="row">Testing Silverblue 38</th>
     <td><mark>"#;
 static PART4: &str = r#" UTC</mark></td>
 </tr>
 <tr>
-  <th scope="row">Testing Kinoite 37</th>
+  <th scope="row">Testing Kinoite 38</th>
   <td><mark>"#;
 static PART5: &str = r#" UTC</mark></td>
 </tr>
@@ -165,7 +165,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 
 async fn testing_fetch_website() -> String {
     let website = reqwest::get(
-        "https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/37/x86_64/testing/",
+        "https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/38/x86_64/testing//",
     )
     .await
     .unwrap()
