@@ -52,13 +52,13 @@ static PART1: &str = r#"<!DOCTYPE html>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Silverblue 38</th>
+            <th scope="row">Silverblue 39</th>
             <td><mark>"#;
 
 static PART2: &str = r#" UTC</mark></td>
 </tr>
 <tr>
-  <th scope="row">Kinoite 38</th>
+  <th scope="row">Kinoite 39</th>
   <td><mark>"#;
 
 static PART3: &str = r#" UTC</mark></td>
@@ -219,9 +219,9 @@ async fn tkn_parse_data() -> String {
     output.to_owned()
 }
 
-async fn fetch_f38_website() -> String {
+async fn fetch_f39_website() -> String {
     let website =
-        reqwest::get("https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/38/x86_64/")
+        reqwest::get("https://kojipkgs.fedoraproject.org/ostree/repo/refs/heads/fedora/39/x86_64/")
             .await
             .unwrap()
             .text()
@@ -231,7 +231,7 @@ async fn fetch_f38_website() -> String {
 }
 
 async fn sb_parse_data() -> String {
-    let html = fetch_f38_website().await;
+    let html = fetch_f39_website().await;
     //console_log!("{}", html);
 
     let re =
@@ -254,7 +254,7 @@ async fn sb_parse_data() -> String {
 }
 
 async fn kn_parse_data() -> String {
-    let html = fetch_f38_website().await;
+    let html = fetch_f39_website().await;
     //console_log!("{}", html);
 
     let re = regex::Regex::new(
